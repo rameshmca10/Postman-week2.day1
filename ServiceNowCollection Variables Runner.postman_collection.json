@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "fef132a4-9ed7-41ee-aca9-ed0778566934",
+		"name": "ServiceNowCollection Variables Runner",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateIncidentWithBody JSON",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"    pm.test(\"Validate response code\", function(){\r",
+							"\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"var response_json = pm.response.json();\r",
+							"pm.globals.set(\"gbl_sys_id\", response_json.result.sys_id);\r",
+							"//var jsonObject = xml2Json(responseBody);\r",
+							"//console.log(response_json.length);\r",
+							"console.log(pm.globals.get(\"gbl_sys_id\"));\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(pm.iterationData.get(\"short_description\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"short_description\": \"{{short_description}}\",\r\n    \"priority\": \"{{priority}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{dev_host}}/api/now/table/{{col_table_name}}?sysparam_fields=sys_id,priority,number",
+					"host": [
+						"{{dev_host}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{col_table_name}}"
+					],
+					"query": [
+						{
+							"key": "sysparam_fields",
+							"value": "sys_id,priority,number"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateIncidentWithBody JSON",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"    pm.test(\"Validate response code\", function(){\r",
+							"\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var response_json = pm.response.json();\r",
+							"pm.globals.set(\"gbl_sys_id\", response_json.result.sys_id);\r",
+							"//var jsonObject = xml2Json(responseBody);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mada_sla\":\"false\",\r\n    \"short_description\": \"Created from Restassured java library put updates\",\r\n    \"priority\": \"9\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{dev_host}}/api/now/table/{{col_table_name}}/{{gbl_sys_id}}",
+					"host": [
+						"{{dev_host}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{col_table_name}}",
+						"{{gbl_sys_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetIncidents JSON",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"    pm.test(\"Validate response code\", function(){\r",
+							"\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{dev_host}}/api/now/table/{{col_table_name}}?sysparm_limit=10",
+					"host": [
+						"{{dev_host}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{col_table_name}}"
+					],
+					"query": [
+						{
+							"key": "sysparm_limit",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteIncidents JSON",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"    pm.test(\"Validate response code\", function(){\r",
+							"\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{dev_host}}/api/now/table/{{col_table_name}}/{{gbl_sys_id}}",
+					"host": [
+						"{{dev_host}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{col_table_name}}",
+						"{{gbl_sys_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "eTbx92PpzFOZ",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "col_table_name",
+			"value": "incident"
+		}
+	]
+}

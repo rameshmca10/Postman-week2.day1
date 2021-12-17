@@ -1,0 +1,212 @@
+{
+	"info": {
+		"_postman_id": "752e8ec0-efce-4645-8fd8-ac2be3013368",
+		"name": "JiraTests Variables",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SearchAllIssues",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{jira_host}}/{{jira_uri}}/2/search?jql=project={{project}}",
+					"host": [
+						"{{jira_host}}"
+					],
+					"path": [
+						"{{jira_uri}}",
+						"2",
+						"search"
+					],
+					"query": [
+						{
+							"key": "jql",
+							"value": "project={{project}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateAnIssue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"var response_json = pm.response.json();\r",
+							"pm.environment.set(\"jira_id\",response_json.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fields\": {\r\n        \"project\": {\r\n            \"key\": \"RA\"\r\n        },\r\n        \"summary\": \"create issue in RA project iwth variables\",\r\n        \"description\": \"Creating of an issue using project keys and issue type names using the REST API\",\r\n        \"issuetype\": {\r\n            \"name\": \"Bug\"\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{jira_host}}/{{jira_uri}}/2/issue/",
+					"host": [
+						"{{jira_host}}"
+					],
+					"path": [
+						"{{jira_uri}}",
+						"2",
+						"issue",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditAnIssue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fields\": {\r\n        \"description\": \"Issue updated via RestAssured on Oct 21 2021 --second time\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{jira_host}}/{{jira_uri}}/2/issue/{{jira_id}}",
+					"host": [
+						"{{jira_host}}"
+					],
+					"path": [
+						"{{jira_uri}}",
+						"2",
+						"issue",
+						"{{jira_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteAnIssue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{jira_host}}/{{jira_uri}}/2/issue/{{jira_id}}",
+					"host": [
+						"{{jira_host}}"
+					],
+					"path": [
+						"{{jira_uri}}",
+						"2",
+						"issue",
+						"{{jira_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "YPJHjeqybIuJ2FwpweGYD1FC",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "hari.radhakrishnan@testleaf.com",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "project",
+			"value": "RA"
+		},
+		{
+			"key": "jira_id",
+			"value": "null"
+		}
+	]
+}
